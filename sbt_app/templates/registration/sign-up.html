@@ -1,0 +1,14 @@
+{%extends "base.html"%}
+{%block title%}Sign up{%endblock%}
+{%load crispy_forms_tags%}
+{%block content%}
+<br>
+<p>Hai già un account? Clicca <a href="/login">Qui</a>!</p>
+<p>Altrimenti inserisci i tuoi dati qui sotto ed iscriviti al sito!<p>
+<br>
+<form method="post">
+{%csrf_token%}{{form|crispy}}
+<button type="submit" class="btn btn-success">Iscriviti</button>
+</form>
+<br><br>
+{%endblock%}
