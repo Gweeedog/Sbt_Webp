@@ -6,6 +6,6 @@
     }],
     "routes": [{
         "src": "/(.*)",
-        "dest": "sbt_webp/wsgi.pi"
+        "dest": "sbt_webp/wsgi.py"
     }]
 }
