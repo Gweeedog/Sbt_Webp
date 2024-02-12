@@ -50,3 +50,6 @@ def logout_view(request):
 
 def store(request):
     return render(request, "store.html")
+
+def task_request(request):
+    return render(request, "task_request.html")
