@@ -1,8 +1,16 @@
 {% extends "base.html" %} 
 {% block title %} Task Request {% endblock %}
+{%load crispy_forms_tags%}
 {% block content %}
 <br>
 <h1>Richiedi un nuovo task</h1>
 <br>
 <br>
+<form action="" method=POST>
+    {%csrf_token%}
+    {{form|crispy}}
+    <center>
+        <input type="submit" value="Submit" class="btn btn-secondary">
+    </center>
+</form>
 {% endblock %}
