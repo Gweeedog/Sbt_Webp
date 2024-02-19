@@ -43,7 +43,7 @@
             <br><br>
             </div> 
             <div class="card-footer"> 
-                <p>Completato il {{task.datetime_limit}}</p>
+                <p>Completato {{task.datetime_limit}}</p>
             </div>    
         </div>
     {%endif%}{% endfor %}
@@ -66,7 +66,7 @@
                 <div class="card-footer"> 
                     <form method="post">
                         {%csrf_token%} 
-                        {%if task.completed%}Completato{%else%}Da completare entro: {{task.datetime_limit}}{%endif%}
+                        {%if task.completed%}Completato {{task.datetime_limit}}{%else%}Da completare entro: {{task.datetime_limit}}{%endif%}
                         {%if task.completed%}
                         <button type="submit" class="btn btn-danger" name="delete_id" value="{{task.id}}" style="float:right"> 
                             Elimina

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import task
 from .forms import RegisterForm, TaskRequestForm
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 import datetime
 from zoneinfo import ZoneInfo
@@ -59,7 +60,8 @@ def task_request(request):
             newtask = task()
             newtask.submission_date = datetime.datetime.now(tz=ZoneInfo("Europe/Rome"))
             newtask.author = request.user
-            newtask.target = form.cleaned_data["target"]
+            usr_num = form.cleaned_data["incaricato"]
+            newtask.target = form.choices[int(usr_num)][1]
             newtask.title = form.cleaned_data["title"]
             date_value = form.cleaned_data["data_limite"]
             time_value = form.cleaned_data["orario_limite"]
