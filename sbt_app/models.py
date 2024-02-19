@@ -20,7 +20,14 @@ class task(models.Model):
     submission_date = models.DateTimeField(auto_now_add=True, editable=False)
 
 class sake_item(models.Model):
-    name = models.CharField(max_length=200)
-    maker_name = models.CharField(max_length=200)
-    class_type = models.CharField(max_length=200)
+    name = models.CharField(max_length=80)
+    maker_name = models.CharField(max_length=50)
+    class_type = models.CharField(max_length=50)
+    region = models.CharField(max_length=20)
+    volume = models.IntegerField()
+    jp_code = models.IntegerField()
+    it_code = models.IntegerField()
+    comment = models.CharField(max_length=200)
     price = models.DecimalField(max_digits = 6, decimal_places = 2)
+    stock = models.IntegerField()
+    priority = models.IntegerField()
