@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from .models import task
 from .forms import RegisterForm, TaskRequestForm
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 import datetime
 from zoneinfo import ZoneInfo
@@ -15,6 +14,8 @@ def home(request):
 @login_required(login_url="/login")
 def tasks(request):
     items = task.objects.all()
+    user_tasks = task.objects.filter(target=request.user, completed=False)
+    completed_tasks = task.objects.filter(target=request.user, completed=True)
     
     if request.method == "POST":
         delete_id = request.POST.get("delete_id")
@@ -31,7 +32,7 @@ def tasks(request):
                 mytask.completed = True
                 mytask.save()
 
-    return render(request, "tasks.html", {"tasks": items})
+    return render(request, "tasks.html", {"tasks": items, "user_tasks": user_tasks, "completed_tasks":completed_tasks})
 
 def sign_up(request):
     if request.method == "POST":

@@ -31,3 +31,7 @@ class sake_item(models.Model):
     price = models.DecimalField(max_digits = 6, decimal_places = 2)
     stock = models.IntegerField()
     priority = models.IntegerField()
+    stock = models.IntegerField()
+    production = models.CharField(max_length=20, default="sokujo moto")
+    koji = models.CharField(max_length=20, default="giallo")
+
