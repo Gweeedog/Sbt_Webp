@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import task
-from .forms import RegisterForm, TaskRequestForm
-from django.contrib.auth import login, logout, authenticate
+from .models import task, order, customer
+from .forms import RegisterForm, TaskRequestForm, OrderRequestForm, AddCustomerForm
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 import datetime
 from zoneinfo import ZoneInfo
@@ -79,3 +79,50 @@ def task_request(request):
     else:
         form = TaskRequestForm()
     return render(request, "task_request.html", {"form": form})
+
+@login_required(login_url="/login")
+def add_customer(request):
+    if request.method == "POST":
+        form = AddCustomerForm(request.POST)
+        if form.is_valid():
+            new_customer = customer()
+            new_customer.name = form.cleaned_data["name"]
+            new_customer.code = form.cleaned_data["codice"]
+            new_customer.address = form.cleaned_data["address"]
+            new_customer.mail_contact = form.cleaned_data["email"]
+            new_customer.phone_number = form.cleaned_data["numero_di_telefono"]
+            new_customer.billing_name = form.cleaned_data["billing_name"]
+            new_customer.billing_address = form.cleaned_data["billing_address"]
+            new_customer.piva = form.cleaned_data["piva"]
+            new_customer.cf = form.cleaned_data["cf"]
+            new_customer.pec = form.cleaned_data["pec"]
+            new_customer.codice_univoco = form.cleaned_data["codice_univoco"]
+            new_customer.notes = form.cleaned_data["note"]
+            new_customer.save()
+            return redirect("add_customer")
+    else:
+        form = AddCustomerForm()
+    return render(request, "add_customer.html", {"form": form})
+
+
+@login_required(login_url="/login")
+def orders(request):
+    items = order.objects.all()
+    return render(request, "orders.html", {"orders": items})
+
+@login_required(login_url="/login")
+def order_request(request):
+    customers = customer.objects.all()
+    if request.method == "POST":
+        form = OrderRequestForm(request.POST)
+        if form.is_valid():
+            new_order = order()
+            new_order.author = request.user
+            new_order.destination = customers.get(name=str(request.POST.get("selected_customer")))
+            new_order.delivery = form.cleaned_data["data_di_consegna_prevista"]
+            new_order.code = form.cleaned_data["codice"]
+            new_order.save()
+            return redirect("orders")
+    else:
+        form = OrderRequestForm()
+    return render(request, "order_request.html", {"form": form, "customers": customers})

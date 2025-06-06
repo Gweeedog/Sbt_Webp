@@ -1,0 +1,24 @@
+{% extends "base.html" %} 
+{% block title %} Order Request {% endblock %}
+{%load crispy_forms_tags%}
+{% block content %}
+<br>
+<h1>Richiedi un nuovo ordine</h1>
+<br>
+<br>
+<form action="" method=POST>
+    {%csrf_token%}
+    <p>Cliente*:</p>
+    <input type="text" list="customers" class="form-control" name="selected_customer">
+        <datalist id="customers">
+            {% for customer in customers %}
+                <option value="{{ customer.name }}"></option>
+            {% endfor %}
+        </datalist>
+    <br>
+    {{form|crispy}}
+    <center>
+        <input type="submit" value="Richiedi Ordine" class="btn btn-secondary">
+    </center>
+</form>
+{% endblock %}

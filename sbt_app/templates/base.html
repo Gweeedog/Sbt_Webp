@@ -47,6 +47,12 @@
           <li class="nav-item {% if request.resolver_match.url_name == 'tasks'%}active{%endif%}">
             <a class="nav-link" href="/tasks">Tasks</a>
           </li>
+          <li class="nav-item {% if request.resolver_match.url_name == 'orders'%}active{%endif%}">
+            <a class="nav-link" href="/orders">Orders</a>
+          </li>
+          <li class="nav-item {% if request.resolver_match.url_name == 'add_customer'%}active{%endif%}">
+            <a class="nav-link" href="/add_customer">Add</a>
+          </li>
           {%endif%}
         </ul>
       </div>

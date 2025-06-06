@@ -1,0 +1,23 @@
+{%extends "base.html"%}
+{%block content%}
+<h1>I miei ordini</h1>
+<span>
+    <p>Crea un nuovo ordine <a href="/order_request">Qui</a>!</p>
+    <br>
+    <br>
+    {% for order in orders %}
+        {%if user.username == order.author.username%}
+            <div class="card mt-2">
+                <div class="card-header">
+                    Da: {{order.author.username}} A {{order.destination.name}}
+                <span style="float:right">{{order.delivery}}</span>
+                </div> 
+                <div class="card-body d-flex d-flexrow justify-content-between">
+                    <br><br>
+                </div>
+            </div>
+            <br>
+        {%endif%}
+    {% endfor %}
+</span>
+{% endblock %}
