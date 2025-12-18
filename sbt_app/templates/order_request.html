@@ -21,6 +21,7 @@
         <input type="text" class="row_element" name="item_name" placeholder="Nome sake">
         <input type="text" class="row_element" name="item_qty" placeholder=1>
         <input type="text" class="row_element"name="discount" placeholder="sconto">
+
         <form method="post"> 
         {%csrf_token%}
         <button id="add-button" class= "mybutton" name="add-button" value={{metadata}}>aggiungi</button>
