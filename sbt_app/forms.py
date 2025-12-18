@@ -63,6 +63,7 @@ class AddCustomerForm(ModelForm):
 class OrderRequestForm(ModelForm):
     codice = forms.CharField(max_length=5, required=True, initial="G001")
     data_di_consegna_prevista = forms.DateField(required=True, widget=forms.DateInput(attrs={"type": "date"}), initial=str(get_default_delivery_date().date()))
+
     class Meta:
         model = order
         fields = ("codice", "data_di_consegna_prevista")

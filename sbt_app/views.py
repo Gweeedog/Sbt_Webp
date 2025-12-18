@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from .models import task, order, customer
+from .models import task, order, customer, sake_item, order_metadata
 from .forms import RegisterForm, TaskRequestForm, OrderRequestForm, AddCustomerForm
 from django.contrib.auth import login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 import datetime
 from zoneinfo import ZoneInfo
 
@@ -11,7 +11,11 @@ from zoneinfo import ZoneInfo
 def home(request):
     return render(request, "home.html")
 
+def is_member(user):
+    return user.groups.filter(name='member').exists()
+
 @login_required(login_url="/login")
+@user_passes_test(is_member)
 def tasks(request):
     items = task.objects.all()
     user_tasks = task.objects.filter(target=request.user, completed=False)
@@ -54,6 +58,7 @@ def store(request):
     return render(request, "store.html")
 
 @login_required(login_url="/login")
+@user_passes_test(is_member)
 def task_request(request):
     if request.method == "POST":
         form = TaskRequestForm(request.POST)
@@ -81,6 +86,7 @@ def task_request(request):
     return render(request, "task_request.html", {"form": form})
 
 @login_required(login_url="/login")
+@user_passes_test(is_member)
 def add_customer(request):
     if request.method == "POST":
         form = AddCustomerForm(request.POST)
@@ -106,23 +112,43 @@ def add_customer(request):
 
 
 @login_required(login_url="/login")
+@user_passes_test(is_member)
 def orders(request):
     items = order.objects.all()
     return render(request, "orders.html", {"orders": items})
 
+
 @login_required(login_url="/login")
+@user_passes_test(is_member)
 def order_request(request):
     customers = customer.objects.all()
+    #sake_list = sake_item.objects.all()
+    metadata = order_metadata()
     if request.method == "POST":
+        item_list = request.POST.get("add-button")
+        metadata.selected_customer = request.POST.get("selected_customer")
+        #item_list = item_list.split()
         form = OrderRequestForm(request.POST)
-        if form.is_valid():
+        if item_list:
+            contents = request.POST.get("contents")
+            if contents == None:
+                contents = request.POST.get("item_name")+"  x "+request.POST.get("item_qty")
+            else:
+                contents += "\n"+request.POST.get("item_name")+"  x "+request.POST.get("item_qty")
+            metadata.contents = contents
+            form = OrderRequestForm()
+        elif form.is_valid():
+            """
             new_order = order()
             new_order.author = request.user
             new_order.destination = customers.get(name=str(request.POST.get("selected_customer")))
             new_order.delivery = form.cleaned_data["data_di_consegna_prevista"]
             new_order.code = form.cleaned_data["codice"]
+            new_order.contents = form.cleaned_data["contenuto"]
             new_order.save()
             return redirect("orders")
+            """
+            print("form is valid")
     else:
         form = OrderRequestForm()
-    return render(request, "order_request.html", {"form": form, "customers": customers})
+    return render(request, "order_request.html", {"form": form, "customers": customers, "metadata": metadata})

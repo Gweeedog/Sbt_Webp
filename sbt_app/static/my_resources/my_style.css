@@ -1,0 +1,9 @@
+.mybutton{
+    background-color: green;
+    padding: 30px 30px;
+    border-radius: 8px;
+}
+
+.row_element{
+    width: 70px;
+}

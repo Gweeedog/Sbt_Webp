@@ -9,16 +9,40 @@
 <form action="" method=POST>
     {%csrf_token%}
     <p>Cliente*:</p>
-    <input type="text" list="customers" class="form-control" name="selected_customer">
+    <input type="text" list="customers" class="form-control" name="selected_customer" value="{{metadata.selected_customer}}">
         <datalist id="customers">
             {% for customer in customers %}
                 <option value="{{ customer.name }}"></option>
             {% endfor %}
         </datalist>
     <br>
+        <div>
+        <p>Aggiungi un nuovo prodotto:</p>
+        <input type="text" class="row_element" name="item_name" placeholder="Nome sake">
+        <input type="text" class="row_element" name="item_qty" placeholder=1>
+        <input type="text" class="row_element"name="discount" placeholder="sconto">
+        <form method="post"> 
+        {%csrf_token%}
+        <button id="add-button" class= "mybutton" name="add-button" value={{metadata}}>aggiungi</button>
+        </form>
+    </div>
+    <br>
+    <div class="card mt-2">
+        <div class="card-header">
+            Contenuto dell'ordine:
+        </div>
+        <div class="card-body d-flex d-flexrow justify-content-between">
+        <input type="text" name="contents" value="{{metadata.contents}}">
+        <br><br>
+        </div>   
+    </div>
+    <br>
     {{form|crispy}}
+    <br>
+    <div>
     <center>
         <input type="submit" value="Richiedi Ordine" class="btn btn-secondary">
     </center>
 </form>
+</div>
 {% endblock %}

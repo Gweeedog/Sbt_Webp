@@ -25,6 +25,7 @@ class sake_item(models.Model):
     stock = models.IntegerField()
     production = models.CharField(max_length=20, default="sokujo moto")
     koji = models.CharField(max_length=20, default="giallo")
+    fullname = models.CharField(max_length=180, default="fullname")
 
 
 class customer(models.Model):
@@ -44,11 +45,33 @@ class customer(models.Model):
     def __str__(self):
         return self.name
 
+"""
+class order_item(models.Model):
+    name = models.CharField(max_length=200)
+    code = models.IntegerField()
+    qty = models.IntegerField(max_length=3)
+    price = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+"""
 
 class order(models.Model):
     code = models.CharField(max_length=5, default=" ")
     destination = models.ForeignKey(customer, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     delivery = models.DateTimeField(blank=False, null=False)
+    contents = models.CharField(max_length=1000, default="Aggiungi qualcosa a questo ordine")
+    item = models.CharField(max_length=200, default="0")
+    price = models.FloatField(max_length=6, default=0.0)
+    qty = models.IntegerField(default=1)
+
     def __str__(self):
         return self.code
+    
+class order_metadata():
+    selected_customer = ""
+    contents = ""
+    
+    def __str__(self):
+        return "selected_customer:"+self.selected_customer+"\ncontents: "+self.contents
