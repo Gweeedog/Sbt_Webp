@@ -127,6 +127,7 @@ def order_request(request):
     if request.method == "POST":
         item_list = request.POST.get("add-button")
         metadata.selected_customer = request.POST.get("selected_customer")
+        
         form = OrderRequestForm(request.POST)
         if item_list:
             contents = request.POST.get("order_contents")
