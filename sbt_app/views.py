@@ -122,19 +122,18 @@ def orders(request):
 @user_passes_test(is_member)
 def order_request(request):
     customers = customer.objects.all()
-    #sake_list = sake_item.objects.all()
+    sake_list = sake_item.objects.all()
     metadata = order_metadata()
     if request.method == "POST":
         item_list = request.POST.get("add-button")
         metadata.selected_customer = request.POST.get("selected_customer")
-        #item_list = item_list.split()
         form = OrderRequestForm(request.POST)
         if item_list:
-            contents = request.POST.get("contents")
-            if contents == None:
-                contents = request.POST.get("item_name")+"  x "+request.POST.get("item_qty")
-            else:
-                contents += "\n"+request.POST.get("item_name")+"  x "+request.POST.get("item_qty")
+            contents = request.POST.get("order_contents")
+            newcont = request.POST.get("item_name")+"   x "+request.POST.get("item_qty")
+            if contents != None:
+                contents += "\n"
+            contents += newcont
             metadata.contents = contents
             form = OrderRequestForm()
         elif form.is_valid():
@@ -151,4 +150,4 @@ def order_request(request):
             print("form is valid")
     else:
         form = OrderRequestForm()
-    return render(request, "order_request.html", {"form": form, "customers": customers, "metadata": metadata})
+    return render(request, "order_request.html", {"form": form, "customers": customers, "metadata": metadata, "sake_list":sake_list})

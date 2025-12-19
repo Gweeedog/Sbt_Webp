@@ -2,7 +2,7 @@
 {%block content%}
 <h1>I miei ordini</h1>
 <span>
-    <p>Crea un nuovo ordine <a href="/order_request">Qui</a>!</p>
+    <button class="btn btn-secondary" onclick="location.href='/order_request'" type="button" >Crea un nuovo ordine</button>
     <br>
     <br>
     {% for order in orders %}
