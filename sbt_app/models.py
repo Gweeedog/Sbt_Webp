@@ -24,11 +24,11 @@ class sake_item(models.Model):
     priority = models.IntegerField()
     stock = models.IntegerField()
     production = models.CharField(max_length=20, default="sokujo moto")
-    koji = models.CharField(max_length=20, default="giallo")
+    #koji = models.CharField(max_length=20, default="giallo")
     fullname = models.CharField(max_length=180, default="fullname")
     cost = models.DecimalField(max_digits = 6, decimal_places = 2)
     alcol = models.IntegerField()
-    seimai = models.IntegerField()
+    #seimai = models.IntegerField()
 
 
 class customer(models.Model):
@@ -47,17 +47,6 @@ class customer(models.Model):
 
     def __str__(self):
         return self.name
-
-"""
-class order_item(models.Model):
-    name = models.CharField(max_length=200)
-    code = models.IntegerField()
-    qty = models.IntegerField(max_length=3)
-    price = models.IntegerField()
-
-    def __str__(self):
-        return self.name
-"""
 
 class order(models.Model):
     code = models.CharField(max_length=5, default=" ")
